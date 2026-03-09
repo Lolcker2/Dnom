@@ -1,0 +1,37 @@
+from flask import Flask, request
+from flask_cors import CORS
+from json import dumps
+from Client import Client
+
+cors = CORS()
+app = Flask(__name__)
+
+
+cors.init_app(app)
+
+@app.route("/connect", methods=["GET"], strict_slashes=False)
+def Name() -> str:
+    name = request.args.get("name")
+    print(f"name: {name}")
+    return dumps({"status": "200 ok"})
+
+@app.route("/send", methods=["GET"], strict_slashes=False)
+def SendMsg() -> str:
+    address = request.args.get("addr")
+    message = request.args.get("msg")
+    print(f"msg: {message}, addr: {address}")
+    return dumps({"status": "200 ok"})
+
+
+@app.route("/dirservice", methods=["GET"], strict_slashes=False)
+def DirService() -> str:
+    data = [{'name': 'Agent-000', 'expiration': 3, 'address': ('127.0.0.0', 80)}, {'name': 'Agent-001', 'expiration': 3, 'address': ('127.0.0.1', 81)}, {'name': 'Agent-002', 'expiration': 3, 'address': ('127.0.0.2', 82)}]
+    print(f"directory service")
+    return dumps({"data": data})
+
+
+# dirservice
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
